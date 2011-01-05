@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Budget" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="BodyStyle" isDefault="true" fontName="Code2000" fontSize="11" pdfFontName="CODE2000.TTF" pdfEncoding="Identity-H"/>
+	<style name="TitleStyle" isDefault="false" style="BodyStyle" fontSize="16" isBold="true"/>
+	<style name="HeadingStyle" isDefault="false" style="BodyStyle" isBold="true"/>
+	<style name="IncidentalStyle" isDefault="false" style="BodyStyle" fontSize="10"/>
+	<style name="SmallStyle" isDefault="false" style="BodyStyle" fontSize="9"/>
+	<style name="TinyStyle" isDefault="false" style="BodyStyle" fontSize="8"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Paul\\IdeaProjects\\tlc\\src\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportTitle" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="companyName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="companyId" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="companySecurityCode" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="currencyDecimals" class="java.lang.Byte">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userId" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userName" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="endOfReport" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParameters" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="offset" class="java.lang.Integer"/>
+	<parameter name="divisor" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[1000.0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sectionClause" class="java.lang.String"/>
+	<parameter name="accountClause" class="java.lang.String"/>
+	<parameter name="periodClause" class="java.lang.String"/>
+	<parameter name="subTitle" class="java.lang.String"/>
+	<parameter name="txtSummary" class="java.lang.String"/>
+	<parameter name="txtCol1" class="java.lang.String"/>
+	<parameter name="txtCol2" class="java.lang.String"/>
+	<parameter name="txtCol3" class="java.lang.String"/>
+	<parameter name="txtCol4" class="java.lang.String"/>
+	<parameter name="txtCol5" class="java.lang.String"/>
+	<parameter name="txtCol6" class="java.lang.String"/>
+	<parameter name="txtCol7" class="java.lang.String"/>
+	<parameter name="txtCol8" class="java.lang.String"/>
+	<parameter name="txtCol9" class="java.lang.String"/>
+	<parameter name="txtCol10" class="java.lang.String"/>
+	<parameter name="txtCol11" class="java.lang.String"/>
+	<parameter name="txtCol12" class="java.lang.String"/>
+	<parameter name="txtCol13" class="java.lang.String"/>
+	<parameter name="txtDebit" class="java.lang.String"/>
+	<parameter name="txtCredit" class="java.lang.String"/>
+	<parameter name="txtSections" class="java.lang.String"/>
+	<parameter name="valSections" class="java.lang.String"/>
+	<parameter name="txtElement2" class="java.lang.String"/>
+	<parameter name="valElement2" class="java.lang.String"/>
+	<parameter name="txtElement3" class="java.lang.String"/>
+	<parameter name="valElement3" class="java.lang.String"/>
+	<parameter name="txtElement4" class="java.lang.String"/>
+	<parameter name="valElement4" class="java.lang.String"/>
+	<parameter name="txtElement5" class="java.lang.String"/>
+	<parameter name="valElement5" class="java.lang.String"/>
+	<parameter name="txtElement6" class="java.lang.String"/>
+	<parameter name="valElement6" class="java.lang.String"/>
+	<parameter name="txtElement7" class="java.lang.String"/>
+	<parameter name="valElement7" class="java.lang.String"/>
+	<parameter name="txtElement8" class="java.lang.String"/>
+	<parameter name="valElement8" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+    a.section_id AS sectionId,
+    s.status AS sectionStatus,
+    s.name AS sectionName,
+    a.id AS accountId,
+    a.code AS accountCode,
+    a.name AS accountName,
+    a.status AS accountStatus
+FROM
+    account AS a,
+    chart_section AS s
+WHERE
+    a.section_id = s.id AND
+    a.security_code = $P{companySecurityCode}
+    $P!{sectionClause} $P!{accountClause}
+ORDER BY
+    s.tree_sequence,
+    a.code]]>
+	</queryString>
+	<field name="sectionId" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sectionStatus" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sectionName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="accountId" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="accountCode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="accountName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="accountStatus" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="nf" class="java.text.NumberFormat">
+		<variableExpression><![CDATA[NumberFormat.getInstance($P{REPORT_LOCALE})
+)
+value.setMinimumIntegerDigits(1)
+value.setMaximumFractionDigits(0)
+try {
+    value.setRoundingMode(RoundingMode.HALF_UP)
+} catch (UnsupportedOperationException uoe) {}
+value.setGroupingUsed(true]]></variableExpression>
+	</variable>
+	<variable name="grpValue1" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue2" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue3" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue4" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue5" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue6" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue7" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue8" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue9" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue10" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue11" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue12" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpValue13" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="grpTotal" class="java.math.BigDecimal" resetType="Group" resetGroup="chartSection" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value1" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue1}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value2" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue2}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value3" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue3}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value4" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue4}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value5" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue5}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value6" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue6}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value7" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue7}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value8" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue8}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value9" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue9}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value10" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue10}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value11" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue11}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value12" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue12}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="value13" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpValue13}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="debitTotal" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpTotal} > 0.0 ? $V{grpTotal} : 0.0]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="creditTotal" class="java.math.BigDecimal" incrementType="Group" incrementGroup="chartSection" calculation="Sum">
+		<variableExpression><![CDATA[$V{grpTotal} < 0.0 ? $V{grpTotal} : 0.0]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<group name="chartSection" minHeightToStartNewPage="46">
+		<groupExpression><![CDATA[$F{sectionId}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement style="SmallStyle" x="0" y="4" width="802" height="13"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{sectionName}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<line>
+					<reportElement x="0" y="2" width="802" height="1"/>
+				</line>
+				<textField>
+					<reportElement style="SmallStyle" x="0" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 1]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue1} : -$V{grpValue1})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="53" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 2]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue2} : -$V{grpValue2})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="106" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 3]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue3} : -$V{grpValue3})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="159" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 4]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue4} : -$V{grpValue4})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="212" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue5} : -$V{grpValue5})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="265" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 6]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue6} : -$V{grpValue6})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="318" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 7]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue7} : -$V{grpValue7})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="371" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 8]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue8} : -$V{grpValue8})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="424" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 9]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue9} : -$V{grpValue9})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="477" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 10]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue10} : -$V{grpValue10})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="530" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 11]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue11} : -$V{grpValue11})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="583" y="4" width="53" height="13">
+						<printWhenExpression><![CDATA[$P{offset} < 12]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue12} : -$V{grpValue12})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="636" y="4" width="53" height="13"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{sectionStatus}== 'dr' ? $V{grpValue13} : -$V{grpValue13})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="689" y="4" width="56" height="13">
+						<printWhenExpression><![CDATA[$V{grpTotal} > 0.0 || ($V{grpTotal} == 0.0 && $F{sectionStatus} == 'dr')]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{grpTotal})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="SmallStyle" x="745" y="4" width="56" height="13">
+						<printWhenExpression><![CDATA[$V{grpTotal} < 0.0 || ($V{grpTotal} == 0.0 && $F{sectionStatus} == 'cr')]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format(-$V{grpTotal})]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="18" width="802" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="67" splitType="Stretch">
+			<textField>
+				<reportElement style="IncidentalStyle" x="0" y="0" width="380" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{companyName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement style="IncidentalStyle" x="644" y="0" width="158" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="20" width="802" height="1"/>
+			</line>
+			<textField>
+				<reportElement style="TitleStyle" x="0" y="24" width="802" height="22"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{reportTitle}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="62" width="802" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="46" width="802" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{subTitle}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="18" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+			</rectangle>
+			<textField>
+				<reportElement style="TinyStyle" x="0" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="53" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="106" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="159" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol4}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="212" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol5}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="265" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol6}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="318" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol7}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="371" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol8}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="424" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol9}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="477" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol10}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="530" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol11}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="583" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol12}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TinyStyle" x="636" y="4" width="53" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCol13}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="689" y="3" width="56" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtDebit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="745" y="3" width="56" height="13"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCredit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement style="SmallStyle" x="26" y="0" width="776" height="13" forecolor="#666666"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{accountCode} + ' ' + $F{accountName}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="13" width="802" height="13"/>
+				<subreportParameter name="accountId">
+					<subreportParameterExpression><![CDATA[$F{accountId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="status">
+					<subreportParameterExpression><![CDATA[$F{accountStatus}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="divisor">
+					<subreportParameterExpression><![CDATA[$P{divisor}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="offset">
+					<subreportParameterExpression><![CDATA[$P{offset}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periodClause">
+					<subreportParameterExpression><![CDATA[$P{periodClause}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="value1" toVariable="grpValue1" calculation="Sum"/>
+				<returnValue subreportVariable="value2" toVariable="grpValue2" calculation="Sum"/>
+				<returnValue subreportVariable="value3" toVariable="grpValue3" calculation="Sum"/>
+				<returnValue subreportVariable="value4" toVariable="grpValue4" calculation="Sum"/>
+				<returnValue subreportVariable="value5" toVariable="grpValue5" calculation="Sum"/>
+				<returnValue subreportVariable="value6" toVariable="grpValue6" calculation="Sum"/>
+				<returnValue subreportVariable="value7" toVariable="grpValue7" calculation="Sum"/>
+				<returnValue subreportVariable="value8" toVariable="grpValue8" calculation="Sum"/>
+				<returnValue subreportVariable="value9" toVariable="grpValue9" calculation="Sum"/>
+				<returnValue subreportVariable="value10" toVariable="grpValue10" calculation="Sum"/>
+				<returnValue subreportVariable="value11" toVariable="grpValue11" calculation="Sum"/>
+				<returnValue subreportVariable="value12" toVariable="grpValue12" calculation="Sum"/>
+				<returnValue subreportVariable="value13" toVariable="grpValue13" calculation="Sum"/>
+				<returnValue subreportVariable="total" toVariable="grpTotal" calculation="Sum"/>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Budget_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="4" width="802" height="1"/>
+			</line>
+			<textField>
+				<reportElement style="IncidentalStyle" x="0" y="8" width="380" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{userName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="IncidentalStyle" x="732" y="8" width="40" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="IncidentalStyle" x="772" y="8" width="30" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="217" splitType="Prevent">
+			<textField>
+				<reportElement x="0" y="6" width="255" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtSummary}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="29" width="802" height="1"/>
+			</line>
+			<textField>
+				<reportElement style="SmallStyle" x="0" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value1} : -$V{value1})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="53" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value2} : -$V{value2})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="106" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 3]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value3} : -$V{value3})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="159" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 4]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value4} : -$V{value4})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="212" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 5]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value5} : -$V{value5})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="265" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 6]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value6} : -$V{value6})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="318" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 7]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value7} : -$V{value7})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="371" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 8]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value8} : -$V{value8})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="424" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value9} : -$V{value9})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="477" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 10]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value10} : -$V{value10})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="530" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 11]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value11} : -$V{value11})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="583" y="31" width="53" height="13">
+					<printWhenExpression><![CDATA[$P{offset} < 12]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value12} : -$V{value12})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="636" y="31" width="53" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal} >= -$V{creditTotal} ? $V{value13} : -$V{value13})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="689" y="31" width="56" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{debitTotal})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="SmallStyle" x="745" y="31" width="56" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format(-$V{creditTotal})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="45" width="802" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="48" width="802" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="63" width="802" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{endOfReport}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="85" width="335" height="14"/>
+				<textElement>
+					<font isBold="false" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{reportParameters}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="105" width="163" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtSections}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="185" y="105" width="617" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{valSections}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="119" width="163" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement2} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtElement2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="185" y="119" width="617" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement2} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{valElement2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="133" width="163" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement3} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtElement3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="185" y="133" width="617" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement3} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{valElement3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="147" width="163" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement4} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtElement4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="185" y="147" width="617" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement4} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{valElement4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="161" width="163" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement5} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtElement5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="185" y="161" width="617" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement5} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{valElement5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="175" width="163" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement6} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtElement6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="185" y="175" width="617" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement6} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{valElement6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="189" width="163" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement7} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtElement7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="185" y="189" width="617" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement7} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{valElement7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="203" width="163" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement8} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtElement8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="185" y="203" width="617" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{valElement8} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{valElement8}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

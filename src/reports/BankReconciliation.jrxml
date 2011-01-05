@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Bank Reconciliation" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<style name="BodyStyle" isDefault="true" fontName="Code2000" fontSize="11" pdfFontName="CODE2000.TTF" pdfEncoding="Identity-H"/>
+	<style name="TitleStyle" isDefault="false" style="BodyStyle" fontSize="16" isBold="true"/>
+	<style name="HeadingStyle" isDefault="false" style="BodyStyle" isBold="true"/>
+	<style name="IncidentalStyle" isDefault="false" style="BodyStyle" fontSize="10"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Paul\\IdeaProjects\\tlc\\src\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportTitle" class="java.lang.String">
+		<defaultValueExpression><![CDATA['Test Report']]></defaultValueExpression>
+	</parameter>
+	<parameter name="companyName" class="java.lang.String">
+		<defaultValueExpression><![CDATA['Test Company']]></defaultValueExpression>
+	</parameter>
+	<parameter name="companyId" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="companySecurityCode" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="currencyDecimals" class="java.lang.Byte">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userId" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userName" class="java.lang.String">
+		<defaultValueExpression><![CDATA['Test User']]></defaultValueExpression>
+	</parameter>
+	<parameter name="endOfReport" class="java.lang.String">
+		<defaultValueExpression><![CDATA['--End of Report--']]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParameters" class="java.lang.String">
+		<defaultValueExpression><![CDATA['Report Parameters']]></defaultValueExpression>
+	</parameter>
+	<parameter name="reconciliationId" class="java.lang.Long"/>
+	<parameter name="decimals" class="java.lang.Byte"/>
+	<parameter name="txtBF" class="java.lang.String"/>
+	<parameter name="txtCF" class="java.lang.String"/>
+	<parameter name="txtPartBF" class="java.lang.String"/>
+	<parameter name="txtFullBF" class="java.lang.String"/>
+	<parameter name="txtDate" class="java.lang.String"/>
+	<parameter name="txtDocument" class="java.lang.String"/>
+	<parameter name="txtReference" class="java.lang.String"/>
+	<parameter name="txtDescription" class="java.lang.String"/>
+	<parameter name="txtPart" class="java.lang.String"/>
+	<parameter name="txtPayment" class="java.lang.String"/>
+	<parameter name="txtReceipt" class="java.lang.String"/>
+	<parameter name="txtUnreconciledTotals" class="java.lang.String"/>
+	<parameter name="txtNoUnreconciledTotals" class="java.lang.String"/>
+	<parameter name="txtSummary" class="java.lang.String"/>
+	<parameter name="txtStatementBalance" class="java.lang.String"/>
+	<parameter name="txtAddReceipts" class="java.lang.String"/>
+	<parameter name="txtLessPayments" class="java.lang.String"/>
+	<parameter name="txtDifferenceShortReceipts" class="java.lang.String"/>
+	<parameter name="txtDifferenceShortPayments" class="java.lang.String"/>
+	<parameter name="txtBankAccountBalance" class="java.lang.String"/>
+	<parameter name="txtBankAccountName" class="java.lang.String"/>
+	<parameter name="txtOD" class="java.lang.String"/>
+	<parameter name="txtFinalized" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     statement_balance AS statementBalance,
+     bank_account_balance AS bankAccountBalance,
+     finalized_date AS finalizedDate
+FROM
+     reconciliation
+WHERE
+     id = $P{reconciliationId}]]>
+	</queryString>
+	<field name="statementBalance" class="java.math.BigDecimal"/>
+	<field name="bankAccountBalance" class="java.math.BigDecimal"/>
+	<field name="finalizedDate" class="java.util.Date"/>
+	<variable name="isLastPage" class="java.lang.Boolean">
+		<variableExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}.get('lastPage')]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}.put('lastPage', false)]]></initialValueExpression>
+	</variable>
+	<variable name="df" class="java.text.DateFormat">
+		<variableExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE})]]></variableExpression>
+	</variable>
+	<variable name="dtf" class="java.text.DateFormat">
+		<variableExpression><![CDATA[DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, $P{REPORT_LOCALE})]]></variableExpression>
+	</variable>
+	<variable name="nf" class="java.text.NumberFormat">
+		<variableExpression><![CDATA[NumberFormat.getInstance($P{REPORT_LOCALE})
+)
+value.setMinimumIntegerDigits(1)
+value.setMinimumFractionDigits($P{decimals}.intValue())
+value.setMaximumFractionDigits($P{decimals}.intValue())
+try {
+    value.setRoundingMode(RoundingMode.HALF_UP)
+} catch (UnsupportedOperationException uoe) {}
+value.setGroupingUsed(true]]></variableExpression>
+	</variable>
+	<variable name="lineCount" class="java.lang.Integer" calculation="System">
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="paymentTotal" class="java.math.BigDecimal" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="receiptTotal" class="java.math.BigDecimal" calculation="System">
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<textField>
+				<reportElement style="IncidentalStyle" x="0" y="0" width="380" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{companyName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement style="IncidentalStyle" x="397" y="0" width="158" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="20" width="555" height="1"/>
+			</line>
+			<textField>
+				<reportElement style="TitleStyle" x="0" y="24" width="555" height="22"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtBankAccountName}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="70" width="555" height="1"/>
+			</line>
+			<textField>
+				<reportElement style="TitleStyle" x="0" y="46" width="555" height="22"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{reportTitle}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="18" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+			</rectangle>
+			<textField>
+				<reportElement style="HeadingStyle" x="0" y="0" width="30" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtBF}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="30" y="0" width="65" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="95" y="0" width="100" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtDocument}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="465" y="0" width="90" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtReceipt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="375" y="0" width="90" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtPayment}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="345" y="0" width="30" height="18"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtPart}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="195" y="0" width="150" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtReference}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="14"/>
+				<subreportParameter name="decimals">
+					<subreportParameterExpression><![CDATA[$P{decimals}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtUnreconciledTotals">
+					<subreportParameterExpression><![CDATA[$P{txtUnreconciledTotals}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtPartBF">
+					<subreportParameterExpression><![CDATA[$P{txtPartBF}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="reconciliationId">
+					<subreportParameterExpression><![CDATA[$P{reconciliationId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtBF">
+					<subreportParameterExpression><![CDATA[$P{txtBF}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtFullBF">
+					<subreportParameterExpression><![CDATA[$P{txtFullBF}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtCF">
+					<subreportParameterExpression><![CDATA[$P{txtCF}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="lineCount" toVariable="lineCount"/>
+				<returnValue subreportVariable="paymentTotal" toVariable="paymentTotal"/>
+				<returnValue subreportVariable="receiptTotal" toVariable="receiptTotal"/>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "BankReconciliation_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="4" width="555" height="1"/>
+			</line>
+			<textField>
+				<reportElement style="IncidentalStyle" x="0" y="8" width="380" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{userName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="IncidentalStyle" x="485" y="8" width="40" height="18"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="IncidentalStyle" x="525" y="8" width="30" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="215" splitType="Prevent">
+			<printWhenExpression><![CDATA[!$P{REPORT_PARAMETERS_MAP}.put('lastPage', true)]]></printWhenExpression>
+			<textField>
+				<reportElement x="0" y="201" width="555" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{endOfReport}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[!$V{lineCount}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtNoUnreconciledTotals}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TitleStyle" x="0" y="27" width="555" height="22"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtSummary}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="73" width="265" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtStatementBalance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="73" width="100" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{statementBalance}.abs())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="87" width="265" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$V{receiptTotal}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtAddReceipts}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="87" width="100" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$V{receiptTotal}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{receiptTotal})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="272" y="103" width="98" height="1" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$V{receiptTotal} && ($V{paymentTotal} || $F{statementBalance} + $V{receiptTotal} != $F{bankAccountBalance})]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="270" y="106" width="100" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$V{receiptTotal} && ($V{paymentTotal} || $F{statementBalance} + $V{receiptTotal} != $F{bankAccountBalance})]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format(($F{statementBalance} + $V{receiptTotal}).abs())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="120" width="265" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$V{paymentTotal}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtLessPayments}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="120" width="100" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$V{paymentTotal}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($V{paymentTotal})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="272" y="135" width="98" height="1" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$V{paymentTotal} && ($F{statementBalance} + ($V{receiptTotal} ?: 0.0) - $V{paymentTotal} != $F{bankAccountBalance})]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="270" y="138" width="100" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$V{paymentTotal} && ($F{statementBalance} + ($V{receiptTotal} ?: 0.0) - $V{paymentTotal} != $F{bankAccountBalance})]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format(($F{statementBalance} + ($V{receiptTotal} ?: 0.0) - $V{paymentTotal}).abs())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="152" width="265" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$F{statementBalance} + ($V{receiptTotal} ?: 0.0) - ($V{paymentTotal} ?: 0.0) != $F{bankAccountBalance}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{bankAccountBalance} - ($F{statementBalance} + ($V{receiptTotal} ?: 0.0) - ($V{paymentTotal} ?: 0.0)) < 0.0) ? $P{txtDifferenceShortPayments} : $P{txtDifferenceShortReceipts}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="152" width="100" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$F{statementBalance} + ($V{receiptTotal} ?: 0.0) - ($V{paymentTotal} ?: 0.0) != $F{bankAccountBalance}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format(($F{bankAccountBalance} - ($F{statementBalance} + ($V{receiptTotal} ?: 0.0) - ($V{paymentTotal} ?: 0.0))).abs())]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="272" y="168" width="98" height="1" isRemoveLineWhenBlank="true"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="171" width="265" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtBankAccountBalance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="171" width="100" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{nf}.format($F{bankAccountBalance}.abs())]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="272" y="187" width="98" height="1" isRemoveLineWhenBlank="true"/>
+			</line>
+			<line>
+				<reportElement x="272" y="190" width="98" height="1" isRemoveLineWhenBlank="true"/>
+			</line>
+			<textField>
+				<reportElement x="372" y="73" width="100" height="14">
+					<printWhenExpression><![CDATA[$F{statementBalance} < 0.0]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtOD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="106" width="100" height="14">
+					<printWhenExpression><![CDATA[$V{receiptTotal} && $F{statementBalance} + $V{receiptTotal} < 0.0 && ($V{paymentTotal} || $F{statementBalance} + $V{receiptTotal} != $F{bankAccountBalance})]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtOD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="138" width="100" height="14">
+					<printWhenExpression><![CDATA[$V{paymentTotal} && ($F{statementBalance} + ($V{receiptTotal} ?: 0.0) - $V{paymentTotal} < 0.0) && ($F{statementBalance} + ($V{receiptTotal} ?: 0.0) - $V{paymentTotal} != $F{bankAccountBalance})]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtOD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="171" width="100" height="14">
+					<printWhenExpression><![CDATA[$F{bankAccountBalance} < 0.0]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtOD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="IncidentalStyle" x="0" y="50" width="553" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtFinalized}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

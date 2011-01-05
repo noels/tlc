@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Statements" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true">
+	<style name="BodyStyle" isDefault="true" fontName="Code2000" fontSize="11" pdfFontName="CODE2000.TTF" pdfEncoding="Identity-H"/>
+	<style name="TitleStyle" isDefault="false" style="BodyStyle" fontSize="16" isBold="true"/>
+	<style name="HeadingStyle" isDefault="false" style="BodyStyle" isBold="true"/>
+	<style name="IncidentalStyle" isDefault="false" style="BodyStyle" fontSize="10"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Paul\\IdeaProjects\\tlc\\src\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportTitle" class="java.lang.String">
+		<defaultValueExpression><![CDATA['Test Report']]></defaultValueExpression>
+	</parameter>
+	<parameter name="companyName" class="java.lang.String">
+		<defaultValueExpression><![CDATA['Test Company']]></defaultValueExpression>
+	</parameter>
+	<parameter name="companyId" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="companySecurityCode" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="currencyDecimals" class="java.lang.Byte">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userId" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userName" class="java.lang.String">
+		<defaultValueExpression><![CDATA['Test User']]></defaultValueExpression>
+	</parameter>
+	<parameter name="endOfReport" class="java.lang.String">
+		<defaultValueExpression><![CDATA['--End of Report--']]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParameters" class="java.lang.String">
+		<defaultValueExpression><![CDATA['Report Parameters']]></defaultValueExpression>
+	</parameter>
+	<parameter name="pid" class="java.lang.Long"/>
+	<parameter name="addressTypeId" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="contactTypeId" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="companyCountryId" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[229]]></defaultValueExpression>
+	</parameter>
+	<parameter name="countryNamesMap" class="java.util.Map">
+		<defaultValueExpression><![CDATA[new java.util.HashMap()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="batch" class="java.lang.Integer"/>
+	<parameter name="batches" class="java.lang.Integer"/>
+	<parameter name="txtTitle" class="java.lang.String"/>
+	<parameter name="txtAccount" class="java.lang.String"/>
+	<parameter name="txtDate" class="java.lang.String"/>
+	<parameter name="txtPage" class="java.lang.String"/>
+	<parameter name="txtCurrency" class="java.lang.String"/>
+	<parameter name="codesPrompt" class="java.lang.String"/>
+	<parameter name="codes" class="java.lang.String"/>
+	<parameter name="batchPrompt" class="java.lang.String"/>
+	<parameter name="txtPart" class="java.lang.String"/>
+	<parameter name="txtDocument" class="java.lang.String"/>
+	<parameter name="txtDocDate" class="java.lang.String"/>
+	<parameter name="txtDueDate" class="java.lang.String"/>
+	<parameter name="txtUnallocated" class="java.lang.String"/>
+	<parameter name="txtReference" class="java.lang.String"/>
+	<parameter name="txtPrevious" class="java.lang.String"/>
+	<parameter name="txtCurrent" class="java.lang.String"/>
+	<parameter name="txtOD" class="java.lang.String"/>
+	<parameter name="txtAmount" class="java.lang.String"/>
+	<parameter name="txtBF" class="java.lang.String"/>
+	<parameter name="txtCF" class="java.lang.String"/>
+	<parameter name="txtDue" class="java.lang.String"/>
+	<parameter name="txtOverdue" class="java.lang.String"/>
+	<parameter name="txtTotal" class="java.lang.String"/>
+	<parameter name="txtReprint" class="java.lang.String"/>
+	<parameter name="txtCustomer" class="java.lang.String"/>
+	<parameter name="specificCustomer" class="java.lang.String"/>
+	<parameter name="noSummary" class="java.lang.Boolean"/>
+	<queryString>
+		<![CDATA[SELECT
+     c.id AS customer_id,
+     c.code AS customer_code,
+     c.name AS customer_name,
+     e.code AS currency_code,
+     e.decimals AS currency_decimals,
+     s.id AS statement_id,
+     s.statement_date AS statement_date,
+     sc.code AS country_code,
+     sl.code AS language_code
+FROM
+     system_workarea AS w,
+     statement AS s,
+     customer AS c,
+     exchange_currency AS e,
+     system_country AS sc,
+     system_language AS sl
+WHERE
+     w.process = $P{pid} AND
+     w.integer1 = $P{batch} AND
+     w.long1 = s.id AND
+     s.customer_id = c.id AND
+     c.currency_id = e.id AND
+     c.country_id = sc.id AND
+     sc.language_id = sl.id
+ORDER BY
+     w.identifier ASC]]>
+	</queryString>
+	<field name="customer_id" class="java.lang.Long"/>
+	<field name="customer_code" class="java.lang.String"/>
+	<field name="customer_name" class="java.lang.String"/>
+	<field name="currency_code" class="java.lang.String"/>
+	<field name="currency_decimals" class="java.lang.Byte"/>
+	<field name="statement_id" class="java.lang.Long"/>
+	<field name="statement_date" class="java.util.Date"/>
+	<field name="country_code" class="java.lang.String"/>
+	<field name="language_code" class="java.lang.String"/>
+	<variable name="df" class="java.text.DateFormat">
+		<variableExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE})]]></variableExpression>
+	</variable>
+	<variable name="nf" class="java.text.NumberFormat">
+		<variableExpression><![CDATA[NumberFormat.getInstance($P{REPORT_LOCALE})
+)
+value.setMinimumIntegerDigits(1)
+value.setMinimumFractionDigits($P{currencyDecimals}.intValue())
+value.setMaximumFractionDigits($P{currencyDecimals}.intValue())
+try {
+    value.setRoundingMode(RoundingMode.HALF_UP)
+} catch (UnsupportedOperationException uoe) {}
+value.setGroupingUsed(true]]></variableExpression>
+	</variable>
+	<group name="customer" isStartNewPage="true" isResetPageNumber="true">
+		<groupExpression><![CDATA[$F{customer_id}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="218" splitType="Stretch">
+			<subreport>
+				<reportElement x="23" y="109" width="480" height="105"/>
+				<subreportParameter name="companyCountryId">
+					<subreportParameterExpression><![CDATA[$P{companyCountryId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customer_name">
+					<subreportParameterExpression><![CDATA[$F{customer_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="countryNamesMap">
+					<subreportParameterExpression><![CDATA[$P{countryNamesMap}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="addressTypeId">
+					<subreportParameterExpression><![CDATA[$P{addressTypeId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="customer_id">
+					<subreportParameterExpression><![CDATA[$F{customer_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="contactTypeId">
+					<subreportParameterExpression><![CDATA[$P{contactTypeId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Statements_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="436" y="36" width="119" height="14"/>
+				<textElement>
+					<font isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{customer_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TitleStyle" mode="Opaque" x="0" y="0" width="555" height="22" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtTitle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="50" width="119" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, new Locale($F{language_code}, $F{country_code})).format($F{statement_date})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="64" width="30" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_NUMBER} + " /"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="78" width="119" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{currency_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="325" y="36" width="100" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtAccount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="325" y="50" width="100" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="325" y="64" width="100" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtPage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="325" y="78" width="100" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCurrency}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="customer">
+				<reportElement x="455" y="64" width="30" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="92" width="119" height="14">
+					<printWhenExpression><![CDATA[$P{txtReprint} > '']]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtReprint}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="18" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+			</rectangle>
+			<textField>
+				<reportElement style="HeadingStyle" x="0" y="2" width="65" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtDocDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="65" y="2" width="95" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtDocument}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="160" y="2" width="95" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtReference}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="255" y="2" width="26" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtPart}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="281" y="2" width="88" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtAmount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="369" y="2" width="88" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtUnallocated}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="465" y="2" width="65" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtDueDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HeadingStyle" x="530" y="2" width="25" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtOD}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="14"/>
+				<subreportParameter name="currency_decimals">
+					<subreportParameterExpression><![CDATA[$F{currency_decimals}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="language_code">
+					<subreportParameterExpression><![CDATA[$F{language_code}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtDue">
+					<subreportParameterExpression><![CDATA[$P{txtDue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtOverdue">
+					<subreportParameterExpression><![CDATA[$P{txtOverdue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="statement_date">
+					<subreportParameterExpression><![CDATA[$F{statement_date}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtCurrent">
+					<subreportParameterExpression><![CDATA[$P{txtCurrent}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtPrevious">
+					<subreportParameterExpression><![CDATA[$P{txtPrevious}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtBF">
+					<subreportParameterExpression><![CDATA[$P{txtBF}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtTotal">
+					<subreportParameterExpression><![CDATA[$P{txtTotal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="txtCF">
+					<subreportParameterExpression><![CDATA[$P{txtCF}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="country_code">
+					<subreportParameterExpression><![CDATA[$F{country_code}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="statement_id">
+					<subreportParameterExpression><![CDATA[$F{statement_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Statements_subreport2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<summary>
+		<band height="122" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$P{noSummary}]]></printWhenExpression>
+			<textField>
+				<reportElement x="0" y="42" width="335" height="14"/>
+				<textElement>
+					<font isBold="false" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{reportParameters}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="77" width="110" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{codesPrompt}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="132" y="77" width="423" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{codes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="91" width="110" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{batchPrompt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="132" y="91" width="423" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{batch}.toString() + ' / ' + $P{batches}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TitleStyle" x="0" y="0" width="555" height="22"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{reportTitle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="63" width="110" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{txtCustomer}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="132" y="63" width="423" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{specificCustomer}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

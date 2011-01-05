@@ -1,0 +1,36 @@
+   Three Ledger Core
+   Copyright 2009 Wholly Grails (www.holygrails.com)
+
+   The MailMessageBuilder portion of this software was developed
+   by Graeme Rocher. It is available under the Apache 2 license.
+
+   This software contains code derived from the i18n-templates
+   plugin written by Marcel Overdijk. It is available under the
+   Apache 2 license.
+
+   The Run Time Logging plugin from Jason Morris has been adapted and
+   included in this package. It is available under the Apache 2 license.
+
+   Interactive help support is provided by the Help Balloons Javascript
+   system written by Beau Scott (www.beauscott.com). It is available
+   under the MIT open source license.
+
+   This distribution includes the cron4j library from Sauron Software.
+   It is available under the LGPL license.
+
+   Portions of the YAHOO! YUI Javascript library are included with
+   this product. The library is available under the BSD license.
+
+   JasperReports and iText libraries are included in this distribution.
+   JasperReports is included under the LGPL license. iText is available
+   under the MPL license.
+
+   The CODE2000.TTF Unicode TrueType font is included with this software.
+   CODE2000.TTF is 'shareware' and was developed by James Kass. Details
+   of the minimal license fee payable (US $5 at the time of writing) can
+   be found at:
+
+                http://www.code2000.net/code2000_page.htm
+
+   We urge you to support James in developing the CODE2000 product by
+   contributing the small license fee requested.
