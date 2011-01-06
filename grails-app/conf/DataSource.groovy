@@ -39,9 +39,9 @@ environments {
         dataSource {
             dbCreate = 'update'     // one of 'create', 'create-drop','update'
             driverClassName = 'com.mysql.jdbc.Driver'
-            url = 'jdbc:mysql://localhost:3306/tlc'
-            username = 'developer'
-            password = 'secret'
+            url = 'jdbc:mysql://localhost:3308/tlc'
+            username = 'root'
+            password = ''
         }
     }
     test {
